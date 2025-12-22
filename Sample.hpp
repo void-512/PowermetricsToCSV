@@ -18,11 +18,11 @@ public:
     int getAnePowerMw() const;
     int getCombinedPowerMw() const;
 
-    std::chrono::system_clock::time_point setTimestamp() const;
-    int setCpuPowerMw() const;
-    int setGpuPowerMw() const;
-    int setAnePowerMw() const;
-    int setCombinedPowerMw() const;
+    void setTimestamp(const std::chrono::system_clock::time_point& ts);
+    void setCpuPowerMw(int power);
+    void setGpuPowerMw(int power);
+    void setAnePowerMw(int power);
+    void setCombinedPowerMw(int power);
     friend std::ostream& operator<<(std::ostream& os, const MetricsSample& sample);
 };
 

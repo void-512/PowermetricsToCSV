@@ -1,6 +1,7 @@
 #include "Sample.hpp"
 
-MetricsSample::MetricsSample() {} = default;
+MetricsSample::MetricsSample() = default;
+
 std::chrono::system_clock::time_point MetricsSample::getTimestamp() const {
     return timestamp;
 }
@@ -43,9 +44,9 @@ void MetricsSample::setCombinedPowerMw(int power) {
 
 std::ostream& operator<<(std::ostream& os, const MetricsSample& sample) {
     os << "Timestamp: " << std::chrono::system_clock::to_time_t(sample.timestamp)
-       << ", CPU Power: " << sample.cpu_power_mw << " mW"
-       << ", GPU Power: " << sample.gpu_power_mw << " mW"
-       << ", ANE Power: " << sample.ane_power_mw << " mW"
-       << ", Combined Power: " << sample.combined_power_mw << " mW";
+       << ", CPU Power: " << sample.getCpuPowerMw() << " mW"
+       << ", GPU Power: " << sample.getGpuPowerMw() << " mW"
+       << ", ANE Power: " << sample.getAnePowerMw() << " mW"
+       << ", Combined Power: " << sample.getCombinedPowerMw() << " mW";
     return os;
 }

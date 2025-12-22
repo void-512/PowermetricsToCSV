@@ -1,6 +1,8 @@
-#pragma once
-#include "parsers.hpp"
+#ifndef __PARSER_FACTORY_HPP__
+#define __PARSER_FACTORY_HPP__
+#include "Parsers.hpp"
 #include <vector>
+#include <memory>
 
 std::vector<std::unique_ptr<LineParser>> makeParsers() {
     std::vector<std::unique_ptr<LineParser>> parsers;
@@ -11,3 +13,5 @@ std::vector<std::unique_ptr<LineParser>> makeParsers() {
     parsers.emplace_back(std::make_unique<CombinedPowerParser>());
     return parsers;
 }
+
+#endif
