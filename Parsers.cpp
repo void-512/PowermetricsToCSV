@@ -1,4 +1,7 @@
 #include "parsers.hpp"
+#include <ctime>
+#include <chrono>
+#include <re2/re2.h>    
 
 bool TimeStampParser::parse(const std::string& line, MetricsSample& sample) const {
     if (line.rfind("*** Sampled system activity", 0) != 0)
