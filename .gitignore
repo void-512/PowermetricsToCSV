@@ -1,3 +1,5 @@
 *.out
 *.pch
 *.txt
+*.o
+*.csv
