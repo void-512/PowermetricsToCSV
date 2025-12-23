@@ -12,6 +12,8 @@ std::vector<std::unique_ptr<LineParser>> makeParsers() {
     parsers.emplace_back(std::make_unique<GpuPowerParser>());
     parsers.emplace_back(std::make_unique<AnePowerParser>());
     parsers.emplace_back(std::make_unique<CombinedPowerParser>());
+    parsers.emplace_back(std::make_unique<CPUFrequencyParser>());
+    parsers.emplace_back(std::make_unique<CPUActiveResidenceParser>());
     return parsers;
 }
 
@@ -33,6 +35,14 @@ ParserType AnePowerParser::type() const {
 
 ParserType CombinedPowerParser::type() const {
     return ParserType::CombinedPower;
+}
+
+ParserType CPUFrequencyParser::type() const {
+    return ParserType::CPUFrequency;
+}
+
+ParserType CPUActiveResidenceParser::type() const {
+    return ParserType::CPUActiveResidence;
 }
 
 bool TimeStampParser::parse(const std::string& line, MetricsSample& sample) const {
@@ -95,6 +105,36 @@ bool CombinedPowerParser::parse(const std::string& line, MetricsSample& sample) 
     int value = 0;
     if (RE2::PartialMatch(line, re, &value)) {
         sample.setCombinedPowerMw(value);
+        return true;
+    }
+    return false;
+}
+
+bool CPUFrequencyParser::parse(const std::string& line, MetricsSample& sample) const {
+        static const RE2 re(
+            R"(CPU\s+(\d+)\s+frequency:\s+(\d+)\s+MHz)"
+        );
+
+        int cpu = 0;
+        int freq = 0;
+
+        if (RE2::PartialMatch(line, re, &cpu, &freq)) {
+            sample.setCpuFrequency(cpu, freq);
+            return true;
+        }
+        return false;
+    }
+
+bool CPUActiveResidenceParser::parse(const std::string& line, MetricsSample& sample) const {
+    static const RE2 re(
+        R"(CPU\s+(\d+)\s+active\sresidency:\s*([\d.]+)%)"
+    );
+
+    int cpu = 0;
+    double util = 0.0;
+
+    if (RE2::PartialMatch(line, re, &cpu, &util)) {
+        sample.setCpuActiveResidence(cpu, util);
         return true;
     }
     return false;

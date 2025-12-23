@@ -11,6 +11,8 @@ enum class ParserType {
     GpuPower,
     AnePower,
     CombinedPower,
+    CPUFrequency,
+    CPUActiveResidence,
     Count
 };
 
@@ -46,6 +48,18 @@ public:
 };
 
 class CombinedPowerParser final : public LineParser {
+public:
+    bool parse(const std::string& line, MetricsSample& sample) const override;
+    ParserType type() const override;
+};
+
+class CPUFrequencyParser final : public LineParser {
+public:
+    bool parse(const std::string& line, MetricsSample& sample) const override;
+    ParserType type() const override;
+};
+
+class CPUActiveResidenceParser final : public LineParser {
 public:
     bool parse(const std::string& line, MetricsSample& sample) const override;
     ParserType type() const override;
